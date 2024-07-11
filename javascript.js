@@ -62,21 +62,54 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
-let humanScore = 0;
-let computerScore = 0;
-
+// Button handler
 const buttons = document.querySelector("#buttons");
 
 buttons.addEventListener("click", function (e) {
-    switch(e.target.getAttribute("id")) {
-        case "rock":
-            playRound("Rock", getComputerChoice());
-            break;
-        case "paper":
-            playRound("Paper", getComputerChoice());
-            break;
-        case "scissors":
-            playRound("Scissors", getComputerChoice());
-            break;
+    if (humanScore < 5 && computerScore < 5) {
+        switch(e.target.getAttribute("id")) {
+            case "rock":
+                playRound("Rock", getComputerChoice());
+                break;
+            case "paper":
+                playRound("Paper", getComputerChoice());
+                break;
+            case "scissors":
+                playRound("Scissors", getComputerChoice());
+                break;
+        }
+
+        results.dispatchEvent(updateScore);
+
+        if (humanScore == 5 || computerScore == 5) {
+            win.dispatchEvent(winnerState);
+        }
     }
+});
+
+// Scores
+let humanScore = 0;
+let computerScore = 0;
+
+// Results
+const results = document.createElement("div");
+results.textContent = `You: ${humanScore} CPU: ${computerScore}`;
+
+document.body.insertBefore(results, document.body.children[0]);
+
+// Update Score
+const updateScore = new Event("update");
+results.addEventListener("update", () => {
+    results.textContent = `You: ${humanScore} CPU: ${computerScore}`;
+});
+
+// Winner Message
+const win = document.createElement("div");
+document.body.appendChild(win);
+
+// Winner Update
+const winnerState = new Event("winner");
+win.addEventListener("winner", () => {
+    if (humanScore == 5) win.textContent = "You Wins!";
+    else if (computerScore == 5) win.textContent = "CPU Wins!";
 });
