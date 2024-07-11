@@ -40,38 +40,43 @@ function getHumanChoice() {
     }
 }
 
-function playGame() {
-
-    function playRound(humanChoice, computerChoice) {
-        // 0 - Rock, 1 - Paper, 2 - Scissors
-        const comparison = {
-            Rock: {weakTo: "Paper", strongTo: "Scissors"},
-            Paper: {weakTo: "Scissors", strongTo: "Rock"},
-            Scissors: {weakTo: "Rock", strongTo: "Paper"}
-        }
-    
-        if (comparison[humanChoice].strongTo == computerChoice) {
-            console.log("You Win! " + `${humanChoice} beats ${computerChoice}!`);
-            humanScore++;
-            return;
-        } else if (comparison[humanChoice].weakTo == computerChoice) {
-            console.log("You Lose. " + `${humanChoice} loses to ${computerChoice}.`);
-            computerScore++;
-            return;
-        } else {
-            console.log("Oops! It's a tie. " + `Both are ${humanChoice}.`);
-            return;
-        }
+function playRound(humanChoice, computerChoice) {
+    // 0 - Rock, 1 - Paper, 2 - Scissors
+    const comparison = {
+        Rock: {weakTo: "Paper", strongTo: "Scissors"},
+        Paper: {weakTo: "Scissors", strongTo: "Rock"},
+        Scissors: {weakTo: "Rock", strongTo: "Paper"}
     }
 
-    let humanScore = 0;
-    let computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        playRound(getHumanChoice(), getComputerChoice());
-
-        console.log(`You: ${humanScore} CPU: ${computerScore}`);
+    if (comparison[humanChoice].strongTo == computerChoice) {
+        console.log("You Win! " + `${humanChoice} beats ${computerChoice}!`);
+        humanScore++;
+        return;
+    } else if (comparison[humanChoice].weakTo == computerChoice) {
+        console.log("You Lose. " + `${humanChoice} loses to ${computerChoice}.`);
+        computerScore++;
+        return;
+    } else {
+        console.log("Oops! It's a tie. " + `Both are ${humanChoice}.`);
+        return;
     }
 }
 
-playGame();
+let humanScore = 0;
+let computerScore = 0;
+
+const buttons = document.querySelector("#buttons");
+
+buttons.addEventListener("click", function (e) {
+    switch(e.target.getAttribute("id")) {
+        case "rock":
+            playRound("Rock", getComputerChoice());
+            break;
+        case "paper":
+            playRound("Paper", getComputerChoice());
+            break;
+        case "scissors":
+            playRound("Scissors", getComputerChoice());
+            break;
+    }
+});
